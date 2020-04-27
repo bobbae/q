@@ -4,7 +4,6 @@ import (
 	"flag"
 
 	"github.com/bobbae/q"
-	"github.com/bobbae/q/qqpkg"
 )
 
 func main() {
@@ -20,5 +19,4 @@ func main() {
 func maintest1() {
 	maintestvar := "aaa"
 	q.Q(maintestvar)
-	qqtest.Qqtest1()
 }
