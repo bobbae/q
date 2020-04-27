@@ -115,6 +115,7 @@ func getTimer(expired bool) *time.Timer {
 	return timer
 }
 
+/*
 func TestLevel(t *testing.T) {
 	QQ(1, "1 don't print")
 	QQ(0, "level 0")
@@ -124,6 +125,7 @@ func TestLevel(t *testing.T) {
 	Level = 0
 	Q("print this at 0")
 }
+*/
 
 // TestOutput verifies that logger.output() prints the expected output to the
 // log buffer.
