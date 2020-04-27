@@ -41,6 +41,7 @@ type logger struct {
 	timer    *time.Timer   // when it gets to 0, start a new log group
 	lastFile string        // last file to call q.Q(). determines when to print header
 	lastFunc string        // last function to call q.Q()
+	logFile  string
 }
 
 // Level can be set to limit output
@@ -101,6 +102,23 @@ func (l *logger) resetTimer(d time.Duration) (expired bool) {
 	return expired
 }
 
+func getPath() (string, error) {
+	path := ""
+	if strings.HasPrefix(Output, "/") {
+		path = Output
+	} else if strings.HasPrefix(Output, "./") {
+		cwd, err := os.Getwd()
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "cannot get cwd", err)
+			return "", fmt.Errorf("can't get cwd, %v\n", err)
+		}
+		path = filepath.Join(cwd, Output)
+	} else {
+		path = filepath.Join(os.TempDir(), Output)
+	}
+	return path, nil
+}
+
 // flush writes the logger's buffer to disk.
 func (l *logger) flush() error {
 	var f *os.File
@@ -110,11 +128,20 @@ func (l *logger) flush() error {
 	case "stdout":
 		f = os.Stdout
 	default:
-		path := filepath.Join(os.TempDir(), Output)
-		f, err := os.OpenFile(path, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0600)
+		path, err := getPath()
 		if err != nil {
+			return err
+		}
+		f, err := os.OpenFile(path, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0600)
+		if err != nil && l.logFile != path {
+			fmt.Fprintln(os.Stderr, "cannot open", path, err)
+			l.logFile = path
 			return fmt.Errorf("failed to open %q: %v", path, err)
 		}
+		if l.logFile != path {
+			fmt.Fprintln(os.Stderr, "logging to", path)
+		}
+		l.logFile = path
 		defer f.Close()
 		return l.ioCopy(f)
 	}
@@ -174,10 +201,7 @@ func Q(v ...interface{}) {
 	if Level == "" {
 		return
 	}
-	QQ(v...)
-}
 
-func QQ(v ...interface{}) {
 	std.mu.Lock()
 	defer std.mu.Unlock()
 
