@@ -10,6 +10,8 @@ Added features I need:
 * -ql xyz turns on q.Q for functions or packages that contain string xyz
 * -ql and -qo flags inserted at init()
 
+Example for this forked version usage at qqtest/main.go
+
 # q
 [![Build Status](https://travis-ci.org/y0ssar1an/q.svg?branch=develop)](https://travis-ci.org/y0ssar1an/q)
 [![GoDoc](https://godoc.org/github.com/y0ssar1an/q?status.svg)](https://godoc.org/github.com/y0ssar1an/q)
