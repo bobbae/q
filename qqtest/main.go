@@ -19,15 +19,18 @@ func main() {
 	one := 1
 	two := 2
 	three := 3
-	//q.Level = ""
 	q.Q(one, two, three)
+
 	maintest1()
+
+	q.Level = ""
+
 	maintest2()
-	q.Level = "main.main"
-	q.Q("reset level to all")
-	maintest1()
-	maintest2()
-	pkg1.pkg1_func1()
+	q.Level = "pkg1"
+	maintest3()
+	pkg1.Pkg1_func1()
+	q.Level = "test"
+	maintest4()
 }
 
 func maintest1() {
@@ -37,4 +40,12 @@ func maintest1() {
 
 func maintest2() {
 	q.Q("test2")
+}
+
+func maintest3() {
+	q.Q("test3")
+}
+
+func maintest4() {
+	q.Q("test4")
 }

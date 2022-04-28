@@ -214,7 +214,7 @@ func Q(v ...interface{}) {
 		std.output(args...) // no name=value printing
 		return
 	}
-	if Level != "all" && !strings.Contains(funcName, Level) {
+	if Level != "all" && !strings.Contains(funcName, Level) { //TODO regexp
 		return
 	}
 
