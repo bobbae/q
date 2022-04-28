@@ -45,8 +45,8 @@ type logger struct {
 	logFile  string
 }
 
-// Level can be set to limit output
-var Level, Output string
+// P (Regexp Pattern for functions) and O (Output destination) can be set to limit output
+var P, O string
 
 // init creates the standard logger.
 func init() {
@@ -61,8 +61,8 @@ func init() {
 		buf:   buf,
 		timer: t,
 	}
-	//flag.StringVar(&Level, "ql", "", "q log level")
-	//flag.StringVar(&Output, "qo", "q", "q log output")
+	//flag.StringVar(&P, "qp", "", "q package/function regexp pattern")
+	//flag.StringVar(&O, "qo", "q", "q log output destination")
 }
 
 // header returns a formatted header string, e.g. [14:00:36 main.go main.main:122]
@@ -105,17 +105,17 @@ func (l *logger) resetTimer(d time.Duration) (expired bool) {
 
 func getPath() (string, error) {
 	path := ""
-	if strings.HasPrefix(Output, "/") {
-		path = Output
-	} else if strings.HasPrefix(Output, "./") {
+	if strings.HasPrefix(O, "/") {
+		path = O
+	} else if strings.HasPrefix(O, "./") {
 		cwd, err := os.Getwd()
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "cannot get cwd", err)
 			return "", fmt.Errorf("can't get cwd, %v\n", err)
 		}
-		path = filepath.Join(cwd, Output)
+		path = filepath.Join(cwd, O)
 	} else {
-		path = filepath.Join(os.TempDir(), Output)
+		path = filepath.Join(os.TempDir(), O)
 	}
 	return path, nil
 }
@@ -123,7 +123,7 @@ func getPath() (string, error) {
 // flush writes the logger's buffer to disk.
 func (l *logger) flush() error {
 	var f *os.File
-	switch Output {
+	switch O {
 	case "stderr":
 		f = os.Stderr
 	case "stdout":
@@ -199,7 +199,7 @@ func (l *logger) output(args ...string) {
 
 // Q pretty-prints the given arguments to the $TMPDIR/q log file.
 func Q(v ...interface{}) {
-	if Level == "" {
+	if P == "" {
 		return
 	}
 
@@ -215,13 +215,12 @@ func Q(v ...interface{}) {
 		std.output(args...) // no name=value printing
 		return
 	}
-	if Level != "all" {
-		// !strings.Contains(funcName, Level)
-		_, err := regexp.MatchString(Level, funcName)
-		if err != nil {
-			return
-		}
+	
+	_, err = regexp.MatchString(P, funcName)
+	if err != nil {
+		return
 	}
+	
 
 	// Print a header line if this q.Q() call is in a different file or
 	// function than the previous q.Q() call, or if the 2s timer expired.

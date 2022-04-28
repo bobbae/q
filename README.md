@@ -1,15 +1,17 @@
 Forked version... with changes not likely to be merged into original.
 
-Added features:
+Added features to make q.Q() a useful debugging tool:
 
-* "leveled" logging via q.Level which uses `ast` reflection to enable logs in only certain functions/pkgs. 
-* By default nothing printed via Q.
-* q.Output = "xyz" creates /tmp/xyz file to store q.Q messages
-* q.Output = "stderr" prints q.Q messages to stderr
-* q.Output = "stdout" prints q.Q messages to stdout
-* q.Level = "all" turns on all q.Q messages
-* q.Level = "xyz" turns on q.Q messages for functions or packages that contain string "xyz"
-* Unlike glog, init() does not add to flags to enable q.Output or q.Level. They are set manually or can be mapped to flags using specific packages such as cobra, flag, urfave/cli, etc. 
+* A kind of "leveled" logging via q.P which can enable logs in only certain functions/pkgs that match regexp pattern.
+* q.O can be set to direct output to a particular file, stdout or stderr
+* By default nothing printed via q.Q() because q.P == "".  q.P should be set to regexp to match package/function names
+* q.O = "xyz" creates /tmp/xyz file to store q.Q messages
+* q.O = "stderr" prints q.Q messages to stderr
+* q.O = "stdout" prints q.Q messages to stdout
+* q.P = "*" turns on all q.Q messages
+* q.P = "xyz.*" turns on q.Q messages for functions or packages that contain string "xyz"
+* q.P can be set to any regexp to match the package or function names. That way only certain q.Q() messages in certain package or function will be printed
+* Unlike glog, init() does not add to flags to enable q.O or q.P. They are set manually or can be mapped to flags using specific packages such as cobra, flag, urfave/cli, etc. This way you can avoid situations where cobra is used for flags and flag package init() done is nullified.
 
 Example for this forked version usage at qqtest/main.go
 
