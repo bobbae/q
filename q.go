@@ -6,7 +6,7 @@ package q
 
 import (
 	"bytes"
-	"flag"
+	//"flag"
 	"fmt"
 	"io"
 	"os"
@@ -60,8 +60,8 @@ func init() {
 		buf:   buf,
 		timer: t,
 	}
-	flag.StringVar(&Level, "ql", "", "q log level")
-	flag.StringVar(&Output, "qo", "q", "q log output")
+	//flag.StringVar(&Level, "ql", "", "q log level")
+	//flag.StringVar(&Output, "qo", "q", "q log output")
 }
 
 // header returns a formatted header string, e.g. [14:00:36 main.go main.main:122]

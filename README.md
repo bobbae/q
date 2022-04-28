@@ -1,14 +1,15 @@
 Forked version... with changes not likely to be merged into original.
 
-Added features I need:
+Added features:
 
-* "leveled" logging via -ql which uses `ast` reflection to enable logs in only certain functions/pkgs 
-* turn all logs off with -ql. by default nothing printed via Q.
-* output specified via -qo.  -qo stdout, -qo stderr, -qo filename
-* -qo xyz creates /tmp/xyz file
-* -ql all turns on all q.Q messages
-* -ql xyz turns on q.Q for functions or packages that contain string xyz
-* -ql and -qo flags inserted at init()
+* "leveled" logging via q.Level which uses `ast` reflection to enable logs in only certain functions/pkgs. 
+* By default nothing printed via Q.
+* q.Output = "xyz" creates /tmp/xyz file to store q.Q messages
+* q.Output = "stderr" prints q.Q messages to stderr
+* q.Output = "stdout" prints q.Q messages to stdout
+* q.Level = "all" turns on all q.Q messages
+* q.Level = "xyz" turns on q.Q messages for functions or packages that contain string "xyz"
+* Unlike glog, init() does not add to flags to enable q.Output or q.Level. They are set manually or can be mapped to flags using specific packages such as cobra, flag, urfave/cli, etc. 
 
 Example for this forked version usage at qqtest/main.go
 
