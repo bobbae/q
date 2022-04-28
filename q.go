@@ -6,6 +6,7 @@ package q
 
 import (
 	"bytes"
+	"regexp"
 	//"flag"
 	"fmt"
 	"io"
@@ -214,8 +215,12 @@ func Q(v ...interface{}) {
 		std.output(args...) // no name=value printing
 		return
 	}
-	if Level != "all" && !strings.Contains(funcName, Level) { //TODO regexp
-		return
+	if Level != "all" {
+		// !strings.Contains(funcName, Level)
+		_, err := regexp.MatchString(Level, funcName)
+		if err != nil {
+			return
+		}
 	}
 
 	// Print a header line if this q.Q() call is in a different file or

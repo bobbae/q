@@ -9,6 +9,8 @@ import (
 )
 
 func main() {
+	//flag.StringVar(&Level, "ql", "", "q log level")
+	//flag.StringVar(&Output, "qo", "q", "q log output")
 	//flag.Parse()
 	//q.Level = "all"
 	//q.Output = ""
