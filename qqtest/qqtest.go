@@ -37,7 +37,7 @@ func main() {
 	//flag.Parse()
 	//qqtest()
 
-	ctx := context.WithValue(context.Background(), "config", &qC)
+	ctx := context.WithValue(context.Background(), "key1", "value1")
 
 	var rootCmd = &cobra.Command{
 		Use:  "qqtest",
@@ -118,6 +118,9 @@ func qqtest(ctx context.Context) {
 	q.P = ".*"
 	q.O = "stderr"
 	q.Q("hello")
+	
+	q.Q(ctx.Value("key1"), ctx.Value("key2"))
+
 	one := 1
 	two := 2
 	three := 3
