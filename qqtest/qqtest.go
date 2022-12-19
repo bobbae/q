@@ -127,16 +127,33 @@ func qqtest(ctx context.Context) {
 	three := 3
 	q.Q(one, two, three)
 
+	fmt.Println("===== test1 should print")
 	maintest1()
 
 	q.P = "" // off all q.Q()
 
+	fmt.Println("===== test2 should not print")
 	maintest2()
+
+	fmt.Println("===== test3 should not print")
 	q.P = "pkg1.*"
 	maintest3()
+
+	fmt.Println("===== pkg1 should print")
 	pkg1.Pkg1_func1()
+	fmt.Println("===== pkg2 should not print")
 	pkg2.Pkg2_func1()
+	fmt.Println("===== all tests should not print")
 	q.P = "test.*"
+	maintest1()
+	maintest2()
+	maintest3()
+	maintest4()
+	q.P = "test4.*"
+	fmt.Println("===== only test4 should print")
+	maintest1()
+	maintest2()
+	maintest3()
 	maintest4()
 }
 

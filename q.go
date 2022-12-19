@@ -200,7 +200,7 @@ func (l *logger) output(args ...string) {
 
 // Q pretty-prints the given arguments to the $TMPDIR/q log file.
 func Q(v ...interface{}) {
-	if P == "" {
+	if P == "" { //XXX hack
 		return
 	}
 
@@ -218,7 +218,8 @@ func Q(v ...interface{}) {
 	}
 
 	matched, err := regexp.MatchString(P, funcName)
-	if !matched {
+	matched2, err := regexp.MatchString(P, file)
+	if !matched && !matched2 {
 		return
 	}
 
