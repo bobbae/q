@@ -15,6 +15,7 @@ import (
 
 	"github.com/bobbae/q"
 	"github.com/bobbae/q/pkg1"
+	"github.com/bobbae/q/pkg2"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -118,7 +119,7 @@ func qqtest(ctx context.Context) {
 	q.P = ".*"
 	q.O = "stderr"
 	q.Q("hello")
-	
+
 	q.Q(ctx.Value("key1"), ctx.Value("key2"))
 
 	one := 1
@@ -134,6 +135,7 @@ func qqtest(ctx context.Context) {
 	q.P = "pkg1.*"
 	maintest3()
 	pkg1.Pkg1_func1()
+	pkg2.Pkg2_func1()
 	q.P = "test.*"
 	maintest4()
 }
@@ -149,10 +151,12 @@ func maintest2() {
 
 func maintest3() {
 	q.Q("test3")
+	q.Q("foo")
 }
 
 func maintest4() {
 	q.Q("test4")
+	q.Q("booo")
 }
 
 /*

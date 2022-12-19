@@ -7,6 +7,7 @@ package q
 import (
 	"bytes"
 	"regexp"
+
 	//"flag"
 	"fmt"
 	"io"
@@ -215,12 +216,11 @@ func Q(v ...interface{}) {
 		std.output(args...) // no name=value printing
 		return
 	}
-	
-	_, err = regexp.MatchString(P, funcName)
-	if err != nil {
+
+	matched, err := regexp.MatchString(P, funcName)
+	if !matched {
 		return
 	}
-	
 
 	// Print a header line if this q.Q() call is in a different file or
 	// function than the previous q.Q() call, or if the 2s timer expired.
